@@ -1,12 +1,13 @@
 import React from "react";
 
-const index = ({ title, className, bgColor }) => {
+const index = ({ className, bgColor, children, ...props }) => {
   return (
-    <div
-      className={`py-2 px-4 bg-primary-700 w-fit rounded-md text-white ${className} ${bgColor} `}
+    <button
+      className={`bg-primary-700 text-white ${className} ${bgColor} `}
+      {...props}
     >
-      {title}
-    </div>
+      {children}
+    </button>
   );
 };
 
