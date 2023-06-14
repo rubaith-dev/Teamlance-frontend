@@ -1,4 +1,4 @@
 import Table from "./Table"
-import AddProductForm from "./AddProduct"
+import ProductForm from "./ProductForm"
 
-export {Table, AddProductForm}
+export {Table, ProductForm}

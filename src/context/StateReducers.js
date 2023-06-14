@@ -2,7 +2,14 @@ import ACTIONS from "./Actions";
 
 export const initialState = {
   showAddProductModal: false,
-  showDeleteModal: false,
+  showEditProductModal: false,
+  selectedProduct: {
+    productName: "",
+    price: "",
+    category: "",
+    availability: "",
+    availableSince: new Date(),
+  },
 };
 
 export const reducer = (state, action) => {
@@ -12,11 +19,21 @@ export const reducer = (state, action) => {
         ...state,
         showAddProductModal: action.payload,
       };
-    case ACTIONS.TOGGLE_SIGNUP_MODAL:
+    case ACTIONS.TOGGLE_EDIT_PRODUCT_MODAL:
       return {
         ...state,
-        showDeleteModal: action.payload,
+        showEditProductModal: action.payload,
       };
+
+    case ACTIONS.SET_SELECTED_PRODUCTED:
+      return {
+        ...state,
+        selectedProduct: action.payload,
+        showEditProductModal: true,
+      };
+
+    case ACTIONS.RESET:
+      return initialState;
 
     default:
       return state;
