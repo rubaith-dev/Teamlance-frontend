@@ -3,6 +3,7 @@ import ACTIONS from "./Actions";
 export const initialState = {
   showAddProductModal: false,
   showEditProductModal: false,
+  showManageCategoryModal: false,
   selectedProduct: {
     productName: "",
     price: "",
@@ -23,6 +24,12 @@ export const reducer = (state, action) => {
       return {
         ...state,
         showEditProductModal: action.payload,
+      };
+
+    case ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL:
+      return {
+        ...state,
+        showManageCategoryModal: action.payload,
       };
 
     case ACTIONS.SET_SELECTED_PRODUCTED:

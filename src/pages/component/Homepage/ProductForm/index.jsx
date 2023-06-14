@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Modal } from "../../shared";
 import { useStateProvider } from "@/context/StateContext";
 import ACTIONS from "@/context/Actions";
@@ -6,12 +6,7 @@ import { useForm } from "react-hook-form";
 import SelectInput from "./Select";
 import Input from "./Input";
 import { X } from "lucide-react";
-
-const categoryOptions = [
-  { value: 1, label: "Electronics" },
-  { value: 2, label: "Footwear" },
-  { value: 3, label: "Gaming" },
-];
+import { useQueryClient } from "react-query";
 
 const statusOptions = [
   { value: "AVAILABLE", label: "Available" },
@@ -25,6 +20,9 @@ const ProductForm = () => {
     { showAddProductModal, showEditProductModal, selectedProduct },
     dispatch,
   ] = useStateProvider();
+
+  const queryClient = useQueryClient();
+  const categoryOptions = queryClient.getQueryData("categories");
 
   const {
     handleSubmit,
@@ -50,13 +48,11 @@ const ProductForm = () => {
   }, [selectedProduct]);
 
   // Fetch All the category
-  useEffect(()=>{
-    
-  },[])
 
   const closeModal = () => {
     dispatch({
-      type: ACTIONS.RESET,
+      type: ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL,
+      payload: false,
     });
     reset();
   };
@@ -71,8 +67,8 @@ const ProductForm = () => {
       >
         <div className="text-gray-600 text-lg flex justify-between">
           <p className="w-full text-center">
-            {showAddProductModal && "Add Product"} 
-            {showEditProductModal && "Edit Product"} 
+            {showAddProductModal && "Add Product"}
+            {showEditProductModal && "Edit Product"}
           </p>
           <X className="cursor-pointer" onClick={() => closeModal()} />
         </div>
@@ -95,7 +91,7 @@ const ProductForm = () => {
         <SelectInput
           control={control}
           name="category"
-          options={categoryOptions}
+          options={categoryOptions?.data}
           placeholder={"Select Category"}
           errorMessage={errors?.category?.message}
         />
