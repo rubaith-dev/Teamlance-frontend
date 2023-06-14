@@ -49,6 +49,11 @@ const ProductForm = () => {
     }
   }, [selectedProduct]);
 
+  // Fetch All the category
+  useEffect(()=>{
+    
+  },[])
+
   const closeModal = () => {
     dispatch({
       type: ACTIONS.RESET,
