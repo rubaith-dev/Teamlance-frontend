@@ -51,7 +51,9 @@ const ProductForm = () => {
 
   const closeModal = () => {
     dispatch({
-      type: ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL,
+      type:
+        (showAddProductModal && ACTIONS.TOGGLE_ADD_PRODUCT_MODAL) ||
+        (showEditProductModal && ACTIONS.TOGGLE_EDIT_PRODUCT_MODAL),
       payload: false,
     });
     reset();
