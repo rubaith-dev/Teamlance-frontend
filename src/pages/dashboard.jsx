@@ -63,4 +63,25 @@ const dashboard = () => {
   );
 };
 
+export async function getServerSideProps(context){
+  const { req } = context;
+  const token = req.cookies["access-token"];
+
+  if (!token) {
+    // If the authentication cookie is not found, redirect to the homepage or show a login page
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      data:"hello"
+    },
+  };
+}
+
 export default dashboard;

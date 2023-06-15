@@ -26,6 +26,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         showEditProductModal: action.payload,
+        selectedProduct: initialState.selectedProduct
       };
 
     case ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL:

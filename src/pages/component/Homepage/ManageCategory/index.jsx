@@ -31,11 +31,10 @@ const ManageCategory = () => {
 
   // call to action when user click add category button
   const addCategory = async ({ categoryName }) => {
-    // calling reusable post request from httpMethods
     const response = await postRequest("/categories/add-category", {
       name: categoryName,
     });
-    // if success show toast
+
     toast(response?.message);
 
     // invalidate previous "fetch-categories" query to get updated categories with added category
@@ -44,18 +43,15 @@ const ManageCategory = () => {
 
   // call to action when user click delete category button
   const deleteCategory = async () => {
-    // calling reusable delete request from httpMethods
     const response = await deleteRequest(
       `/categories/${selectedCategory.value}`
     );
 
-    // if success show toast
     toast(response?.message);
 
     // invalidate previous "fetch-categories" query to get updated categories with deleted category
     queryClient.invalidateQueries("fetch-categories");
 
-    // clear the selected category
     setSelectedCategory(null);
   };
 
@@ -63,13 +59,10 @@ const ManageCategory = () => {
   const closeModal = () => {
     // dispatch action to reset
     dispatch({
-      type: ACTIONS.RESET,
+      type: ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL, payload:false
     });
-
-    //reset hook form
     reset();
 
-    // clear selected category
     setSelectedCategory(null);
   };
 
@@ -100,7 +93,7 @@ const ManageCategory = () => {
             Add
           </button>
         </form>
-        
+
         {/* Section to delete category */}
         <p className="text-gray-500 mt-6 mb-2">Select Category to Delete</p>
         <Select
