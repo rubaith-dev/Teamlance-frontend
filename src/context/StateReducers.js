@@ -4,6 +4,8 @@ export const initialState = {
   showAddProductModal: false,
   showEditProductModal: false,
   showManageCategoryModal: false,
+  showSigninOption: true,
+  userInfo: null,
   selectedProduct: {
     productName: "",
     price: "",
@@ -32,12 +34,21 @@ export const reducer = (state, action) => {
         showManageCategoryModal: action.payload,
       };
 
+    case ACTIONS.TOGGLE_AUTH_MODAL:
+      return {
+        ...state,
+        showSigninOption: action.payload,
+      };
+
     case ACTIONS.SET_SELECTED_PRODUCTED:
       return {
         ...state,
         selectedProduct: action.payload,
         showEditProductModal: true,
       };
+
+    case ACTIONS.SET_USER_INFO:
+      return { ...state, userInfo: action.payload };
 
     case ACTIONS.RESET:
       return initialState;

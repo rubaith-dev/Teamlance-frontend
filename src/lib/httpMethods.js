@@ -7,7 +7,7 @@ const postRequest = async (url, data) => {
     return response.data;
   } catch (error) {
     // Show error alert
-    toast(error.response.data.message);
+    toast(error.response?.data.message);
   }
 };
 
@@ -17,7 +17,7 @@ const getRequest = async (url) => {
     return response.data;
   } catch (error) {
     // Show error alert
-    toast(error.response.data.message);
+    toast(error.response?.data.message);
   }
 };
 
@@ -27,7 +27,7 @@ const putRequest = async (url, data) => {
     return response.data;
   } catch (error) {
     // Show error alert
-    toast(error.response.data.message);
+    toast(error.response?.data.message);
   }
 };
 
@@ -37,7 +37,7 @@ const deleteRequest = async (url) => {
     return response.data;
   } catch (error) {
     // Show error alert
-    toast(error.response.data.message);
+    toast(error.response?.data.message);
   }
 };
 
