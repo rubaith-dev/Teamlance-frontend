@@ -2,6 +2,7 @@ import { SignIn, SignUp } from "./component/Authpage";
 import { postRequest } from "@/lib/httpMethods";
 import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";
+import ACTIONS from "@/context/Actions";
 
 export default function Home() {
   const [{ showSigninOption }, dispatch] = useStateProvider();
@@ -11,6 +12,7 @@ export default function Home() {
     const { type, confirmPassword, ...formData } = data;
     const response = await postRequest(`/auth/${type}`, formData);
     if (response) {
+      dispatch({ type: ACTIONS.SET_USER_INFO, payload: response.data });
       push("/dashboard");
     }
   };
