@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import SelectInput from "./Select";
 import Input from "./Input";
 import { X } from "lucide-react";
-import { useQueryClient } from "react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 const statusOptions = [
   { value: "AVAILABLE", label: "Available" },
@@ -14,15 +14,12 @@ const statusOptions = [
   { value: "DISCONTINUED", label: "Discontinued" },
 ];
 
-// This is the form to add new product
+// This is the form to add new product or edit product
 const ProductForm = () => {
   const [
     { showAddProductModal, showEditProductModal, selectedProduct },
     dispatch,
   ] = useStateProvider();
-
-  const queryClient = useQueryClient();
-  const categoryOptions = queryClient.getQueryData("categories");
 
   const {
     handleSubmit,
@@ -59,6 +56,11 @@ const ProductForm = () => {
     reset();
   };
 
+  const queryClient = useQueryClient();
+  const { data: categoryOptions } = queryClient.getQueryData([
+    "fetch-categories",
+  ]);
+
   return (
     // Wrapped with Modal wrapper
     <Modal isOpen={showAddProductModal || showEditProductModal}>
@@ -93,7 +95,7 @@ const ProductForm = () => {
         <SelectInput
           control={control}
           name="category"
-          options={categoryOptions?.data}
+          options={categoryOptions}
           placeholder={"Select Category"}
           errorMessage={errors?.category?.message}
         />

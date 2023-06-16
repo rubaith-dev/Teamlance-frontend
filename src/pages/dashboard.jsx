@@ -5,26 +5,20 @@ import { useStateProvider } from "@/context/StateContext";
 import ACTIONS from "@/context/Actions";
 import { CircleDollarSign, Plus, Trash } from "lucide-react";
 const inter = Inter({ subsets: ["latin"] });
-import { useQuery, useQueryClient } from "react-query";
 import axiosInstance from "@/lib/axiosInstance";
 import axiosInstanceSSR from "@/lib/axiosInstanceSSR";
 import { destroyCookie } from "nookies";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetchAllCategories = async () => {
   const response = await axiosInstance.get("/categories");
   return response.data;
 };
 
-const dashboard = () => {
+const dashboard = (props) => {
   const [{}, dispatch] = useStateProvider();
-  const queryClient = useQueryClient();
-  const { data: categoryOptions } = useQuery(
-    "fetch-categories",
-    fetchAllCategories,
-    { retry: false }
-  );
 
-  queryClient.setQueryData("categories", categoryOptions);
+  useQuery({ queryKey: ["fetch-categories"], queryFn: fetchAllCategories, initialData: props.data.categoriesOptions });
 
   return (
     <main
@@ -66,10 +60,9 @@ const dashboard = () => {
 };
 
 export async function getServerSideProps(context) {
-  const { req,res } = context;
+  const { req, res } = context;
   const token = req.cookies["access-token"];
-
-  console.log(res)
+  let clientData = {};
 
   if (!token) {
     // If the authentication cookie is not found, redirect to the homepage
@@ -84,9 +77,25 @@ export async function getServerSideProps(context) {
     const res = await axiosInstanceSSR.get("/auth/isAuthenticated", {
       headers: { Cookie: `access-token=${token}` },
     });
-    console.log(res);
   } catch (error) {
-    destroyCookie({res}, "access-token")
+    destroyCookie({ res }, "access-token");
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  try {
+    const res = await axiosInstanceSSR.get("/categories", {
+      headers: { Cookie: `access-token=${token}` },
+    });
+
+    clientData["categoriesOptions"] = res.data.data;
+  } catch (error) {
+    console.log(error);
+    destroyCookie({ res }, "access-token");
     return {
       redirect: {
         destination: "/",
@@ -97,7 +106,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: "hello",
+      data: { ...clientData },
     },
   };
 }
