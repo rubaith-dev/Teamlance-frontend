@@ -1,5 +1,6 @@
 import axios from "axios";
 import Router from "next/router";
+import { destroyCookie } from "nookies";
 import { toast } from "react-toastify";
 
 const axiosInstance = axios.create({
@@ -11,10 +12,13 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      toast(error.response?.data.message);
+      destroyCookie(null, "access-token");
       Router.push("/");
+      toast(error.response?.data.message);
+      
     }
     toast(error.response?.data.message);
+    return error
   }
 );
 

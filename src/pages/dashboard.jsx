@@ -3,10 +3,12 @@ import { ProductForm, Table, ManageCategory } from "./component/Homepage";
 import { Button } from "./component/shared";
 import { useStateProvider } from "@/context/StateContext";
 import ACTIONS from "@/context/Actions";
-import { Plus, Trash } from "lucide-react";
+import { CircleDollarSign, Plus, Trash } from "lucide-react";
 const inter = Inter({ subsets: ["latin"] });
 import { useQuery, useQueryClient } from "react-query";
 import axiosInstance from "@/lib/axiosInstance";
+import axiosInstanceSSR from "@/lib/axiosInstanceSSR";
+import { destroyCookie } from "nookies";
 
 const fetchAllCategories = async () => {
   const response = await axiosInstance.get("/categories");
@@ -63,12 +65,28 @@ const dashboard = () => {
   );
 };
 
-export async function getServerSideProps(context){
-  const { req } = context;
+export async function getServerSideProps(context) {
+  const { req,res } = context;
   const token = req.cookies["access-token"];
 
+  console.log(res)
+
   if (!token) {
-    // If the authentication cookie is not found, redirect to the homepage or show a login page
+    // If the authentication cookie is not found, redirect to the homepage
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  try {
+    const res = await axiosInstanceSSR.get("/auth/isAuthenticated", {
+      headers: { Cookie: `access-token=${token}` },
+    });
+    console.log(res);
+  } catch (error) {
+    destroyCookie({res}, "access-token")
     return {
       redirect: {
         destination: "/",
@@ -79,7 +97,7 @@ export async function getServerSideProps(context){
 
   return {
     props: {
-      data:"hello"
+      data: "hello",
     },
   };
 }
