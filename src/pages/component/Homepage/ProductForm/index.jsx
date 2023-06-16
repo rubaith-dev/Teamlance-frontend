@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 import SelectInput from "./Select";
 import Input from "./Input";
 import { X } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postRequest } from "@/lib/httpMethods";
 
 const statusOptions = [
   { value: "AVAILABLE", label: "Available" },
@@ -16,10 +17,7 @@ const statusOptions = [
 
 // This is the form to add new product or edit product
 const ProductForm = () => {
-  const [
-    { showAddProductModal, showEditProductModal, selectedProduct },
-    dispatch,
-  ] = useStateProvider();
+  const [{ showAddProductModal, showEditProductModal, selectedProduct }, dispatch] = useStateProvider();
 
   const {
     handleSubmit,
@@ -30,12 +28,27 @@ const ProductForm = () => {
     reset,
   } = useForm({ selectedProduct });
 
-  const onSubmit = (data) => console.log(data);
+  //Add Product Handler
+  const addProduct = async (data) => {
+    const { productName, category, availability, price } = data;
+    const requestData = {
+      productName,
+      price,
+      availability: availability.value,
+      categoryId: category.value,
+    };
+
+    await postRequest("/products/add-product", requestData);
+  };
+
+  const addProductMutation = useMutation({
+    mutationFn: (variables) => addProduct(variables),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["fetch-products"] }),
+  });
 
   useEffect(() => {
     if (selectedProduct) {
-      const { productName, price, category, availability, availableSince } =
-        selectedProduct;
+      const { productName, price, category, availability, availableSince } = selectedProduct;
       setValue("productName", productName);
       setValue("price", price);
       setValue("category", category);
@@ -57,15 +70,13 @@ const ProductForm = () => {
   };
 
   const queryClient = useQueryClient();
-  const { data: categoryOptions } = queryClient.getQueryData([
-    "fetch-categories",
-  ]);
+  const { data: categoryOptions } = queryClient.getQueryData(["fetch-categories"]);
 
   return (
     // Wrapped with Modal wrapper
     <Modal isOpen={showAddProductModal || showEditProductModal}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => addProductMutation.mutate(data))}
         className="w-96 bg-gray-100 p-5 rounded-md shadow-lg flex flex-col gap-5"
         noValidate
       >
@@ -108,16 +119,7 @@ const ProductForm = () => {
           errorMessage={errors?.availability?.message}
         />
 
-        {/* <input
-          {...register("availableSince", { valueAsDate: true })}
-          id="availableSince"
-          type="date"
-        /> */}
-
-        <button
-          type="submit"
-          className="bg-primary-700 text-white p-2 rounded-md"
-        >
+        <button type="submit" className="bg-primary-700 text-white p-2 rounded-md">
           Submit
         </button>
       </form>

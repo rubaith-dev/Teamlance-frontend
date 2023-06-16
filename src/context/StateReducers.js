@@ -6,6 +6,7 @@ export const initialState = {
   showManageCategoryModal: false,
   showSigninOption: true,
   userInfo: null,
+  selectedDeleteProductsId: new Set(),
   selectedProduct: {
     productName: "",
     price: "",
@@ -26,7 +27,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         showEditProductModal: action.payload,
-        selectedProduct: initialState.selectedProduct
+        selectedProduct: initialState.selectedProduct,
       };
 
     case ACTIONS.TOGGLE_MANAGE_CATEGORY_MODAL:
@@ -46,6 +47,34 @@ export const reducer = (state, action) => {
         ...state,
         selectedProduct: action.payload,
         showEditProductModal: true,
+      };
+
+    case ACTIONS.SET_DELETED_PRODUCT_ID:
+      const productId = action.payload;
+      const updatedSelectedProductsId = new Set(state.selectedDeleteProductsId);
+
+      if (updatedSelectedProductsId.has(productId)) {
+        updatedSelectedProductsId.delete(productId);
+      } else {
+        updatedSelectedProductsId.add(productId);
+      }
+
+      return {
+        ...state,
+        selectedDeleteProductsId: updatedSelectedProductsId,
+      };
+
+    case ACTIONS.SELECT_ALL_PRODUCTS_ID:
+      const allProductIds = action.payload;
+      return {
+        ...state,
+        selectedDeleteProductsId: new Set(allProductIds),
+      };
+
+    case ACTIONS.CLEAR_SELECTED_PRODUCTS:
+      return {
+        ...state,
+        selectedDeleteProductsId: new Set(),
       };
 
     case ACTIONS.SET_USER_INFO:
