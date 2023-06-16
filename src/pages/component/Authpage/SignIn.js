@@ -32,6 +32,10 @@ const SignIn = ({ showSigninOption, submit, dispatch }) => {
           placeholder="Password"
           {...register("password", {
             required: "Password is required",
+            minLength:{
+              value:3,
+              message: "Password must be at least 3 characters long"
+            }
           })}
         />
         <p className="text-red-800 mt-2">{errors?.password?.message}</p>

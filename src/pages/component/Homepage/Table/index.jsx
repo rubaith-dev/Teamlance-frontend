@@ -18,7 +18,7 @@ const index = () => {
       <div className="">
         <TableHeader />
         {products?.map((product, index) => {
-          return <TableRow key={index} orderId={index} {...product} />;
+          return <TableRow key={index} orderId={index} {...product} isLoading={isLoading} />;
         })}
       </div>
     </section>

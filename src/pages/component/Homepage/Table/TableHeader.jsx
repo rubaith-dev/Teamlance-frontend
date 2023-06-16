@@ -31,7 +31,7 @@ const TableHeader = () => {
                 ? dispatch({ type: ACTIONS.CLEAR_SELECTED_PRODUCTS })
                 : dispatch({ type: ACTIONS.SELECT_ALL_PRODUCTS_ID, payload: allProductsId })
             }
-            checked={isAllSelected}
+            checked={isAllSelected && products?.length > 0}
           />
         </div>
 

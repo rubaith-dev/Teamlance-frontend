@@ -7,7 +7,7 @@ import { useStateProvider } from "@/context/StateContext";
 import { ProductForm } from "..";
 import Checkbox from "rc-checkbox";
 
-const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId }) => {
+const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId, isLoading }) => {
   let isIdODD = (orderId + 1) % 2 === 0;
   const [{ selectedDeleteProductsId }, dispatch] = useStateProvider();
   const isSelectedForDelete = selectedDeleteProductsId.has(productId);
@@ -21,42 +21,45 @@ const TableRow = ({ orderId, name, price, category, availability, createdAt, id:
         category,
         availability,
         createdAt,
+        productId,
       },
     });
   };
 
   return (
-    <div className="">
-      {/* <Skeleton
-        className="p-5"
-        baseColor={`${isIdODD ? "#d1d5db" : ""}`}
-        highlightColor={`${isIdODD ? "#e5e7eb" : ""}`}
-      /> */}
+    <div className="h-[80v]">
+      {isLoading ? (
+        <Skeleton
+          className="p-5"
+          baseColor={`${isIdODD ? "#d1d5db" : ""}`}
+          highlightColor={`${isIdODD ? "#e5e7eb" : ""}`}
+        />
+      ) : (
+        <section className="flex">
+          <div className={`w-12 grid place-items-center cursor-pointer ${isIdODD ? "bg-white " : "bg-gray-100"}`}>
+            <Checkbox
+              onClick={() => dispatch({ type: ACTIONS.SET_DELETED_PRODUCT_ID, payload: productId })}
+              checked={isSelectedForDelete}
+            />
+          </div>
 
-      <div className="flex">
-        <div className={`w-12 grid place-items-center cursor-pointer ${isIdODD ? "bg-white " : "bg-gray-100"}`}>
-          <Checkbox
-            onClick={() => dispatch({ type: ACTIONS.SET_DELETED_PRODUCT_ID, payload: productId })}
-            checked={isSelectedForDelete}
-          />
-        </div>
-
-        <div
-          className={`flex p-4 justify-between cursor-pointer  ${
-            isIdODD ? "bg-white " : "bg-gray-100"
-          } hover:bg-primary-600 hover:text-white flex-grow duration-300 ${
-            isSelectedForDelete ? "bg-primary-300" : ""
-          }`}
-          onClick={handleSelectProduct}
-        >
-          <p className={styles.table_row}>{name}</p>
-          <p className={styles.table_row}>{category?.value}</p>
-          <p className={styles.table_row}>{category?.label}</p>
-          <p className={styles.table_row}>${price}</p>
-          <p className={styles.table_row}>{availability?.label}</p>
-          <p className={styles.table_row}>{createdAt.split("T")[0]}</p>
-        </div>
-      </div>
+          <div
+            className={`flex p-4 justify-between cursor-pointer  ${
+              isIdODD ? "bg-white " : "bg-gray-100"
+            } hover:bg-primary-600 hover:text-white flex-grow duration-300 ${
+              isSelectedForDelete ? "bg-primary-300" : ""
+            }`}
+            onClick={handleSelectProduct}
+          >
+            <p className={styles.table_row}>{name}</p>
+            <p className={styles.table_row}>{category?.value}</p>
+            <p className={styles.table_row}>{category?.label}</p>
+            <p className={styles.table_row}>${price}</p>
+            <p className={styles.table_row}>{availability?.label}</p>
+            <p className={styles.table_row}>{createdAt.split("T")[0]}</p>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

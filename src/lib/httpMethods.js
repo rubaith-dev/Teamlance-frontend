@@ -10,8 +10,8 @@ const getRequest = async (url) => {
   return response?.data;
 };
 
-const putRequest = async (url, data) => {
-  const response = await axiosInstance.put(url, data);
+const patchRequest = async (url, data) => {
+  const response = await axiosInstance.patch(url, data);
   return response?.data;
 };
 
@@ -20,4 +20,4 @@ const deleteRequest = async (url) => {
   return response?.data;
 };
 
-export { getRequest, postRequest, deleteRequest, putRequest };
+export { getRequest, postRequest, deleteRequest, patchRequest };

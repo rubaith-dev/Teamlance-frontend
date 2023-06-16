@@ -7,7 +7,9 @@ import SelectInput from "./Select";
 import Input from "./Input";
 import { X } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postRequest } from "@/lib/httpMethods";
+import { patchRequest, postRequest } from "@/lib/httpMethods";
+import { patchFetch } from "next/dist/server/lib/patch-fetch";
+import { toast } from "react-toastify";
 
 const statusOptions = [
   { value: "AVAILABLE", label: "Available" },
@@ -28,8 +30,19 @@ const ProductForm = () => {
     reset,
   } = useForm({ selectedProduct });
 
-  //Add Product Handler
-  const addProduct = async (data) => {
+  const closeModal = () => {
+    dispatch({
+      type:
+        (showAddProductModal && ACTIONS.TOGGLE_ADD_PRODUCT_MODAL) ||
+        (showEditProductModal && ACTIONS.TOGGLE_EDIT_PRODUCT_MODAL),
+      payload: false,
+    });
+    reset();
+  };
+
+
+  //Add or Edit Product Handler
+  const manageProduct = async (data) => {
     const { productName, category, availability, price } = data;
     const requestData = {
       productName,
@@ -37,12 +50,20 @@ const ProductForm = () => {
       availability: availability.value,
       categoryId: category.value,
     };
+    let response = {};
 
-    await postRequest("/products/add-product", requestData);
+    if (showAddProductModal) {
+      response = await postRequest("/products/add-product", requestData);
+    }
+    if (showEditProductModal) {
+      response = await patchRequest(`/products/${selectedProduct.productId}`, requestData);
+    }
+    closeModal()
+    toast(response?.message);
   };
 
-  const addProductMutation = useMutation({
-    mutationFn: (variables) => addProduct(variables),
+  const manageProductMutation = useMutation({
+    mutationFn: (variables) => manageProduct(variables),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["fetch-products"] }),
   });
 
@@ -57,17 +78,7 @@ const ProductForm = () => {
     }
   }, [selectedProduct]);
 
-  // Fetch All the category
 
-  const closeModal = () => {
-    dispatch({
-      type:
-        (showAddProductModal && ACTIONS.TOGGLE_ADD_PRODUCT_MODAL) ||
-        (showEditProductModal && ACTIONS.TOGGLE_EDIT_PRODUCT_MODAL),
-      payload: false,
-    });
-    reset();
-  };
 
   const queryClient = useQueryClient();
   const { data: categoryOptions } = queryClient.getQueryData(["fetch-categories"]);
@@ -76,7 +87,7 @@ const ProductForm = () => {
     // Wrapped with Modal wrapper
     <Modal isOpen={showAddProductModal || showEditProductModal}>
       <form
-        onSubmit={handleSubmit((data) => addProductMutation.mutate(data))}
+        onSubmit={handleSubmit((data) => manageProductMutation.mutate(data))}
         className="w-96 bg-gray-100 p-5 rounded-md shadow-lg flex flex-col gap-5"
         noValidate
       >

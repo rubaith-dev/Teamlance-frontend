@@ -8,7 +8,9 @@ const inter = Inter({ subsets: ["latin"] });
 import axiosInstance from "@/lib/axiosInstance";
 import axiosInstanceSSR from "@/lib/axiosInstanceSSR";
 import { destroyCookie } from "nookies";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteRequest } from "@/lib/httpMethods";
+import { toast } from "react-toastify";
 
 const fetchAllCategories = async () => {
   const response = await axiosInstance.get("/categories");
@@ -20,15 +22,36 @@ const dashboard = (props) => {
 
   useQuery({ queryKey: ["fetch-categories"], queryFn: fetchAllCategories, initialData: props.data.categoriesOptions });
 
+  const handleDelete = async () => {
+    const selectedIds = Array.from(selectedDeleteProductsId);
+    let stringIds = selectedIds.join(",");
+
+    if (selectedIds.length > 0) {
+      const response = await deleteRequest(`/products?productIds=${stringIds}`);
+      toast(response?.message);
+    }
+  };
+
+  const queryClient = useQueryClient();
+
+  const deleteProductsMutation = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: (res) => {
+      dispatch({type:ACTIONS.CLEAR_SELECTED_PRODUCTS})
+      queryClient.invalidateQueries({ queryKey: ["fetch-products"] });
+    },
+  });
+
   return (
     <main className={`${inter.className} h-screen pt-5 px-2 relative`}>
       <div className="flex gap-5 justify-between">
-        {/* Manage Category Button */}
+        {/* delete Button */}
         <button
           className={`p-3 flex gap-1 rounded-md ${
             selectedDeleteProductsId.size > 0 ? "bg-primary-700 text-white cursor-pointer" : "bg-gray-100 text-gray-400"
           }`}
           disabled={false}
+          onClick={() => deleteProductsMutation.mutate()}
         >
           <Trash /> {`Products (${selectedDeleteProductsId.size})`}
         </button>

@@ -2,15 +2,17 @@ import React from "react";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/router";
 import { Button } from "../shared";
+import { useStateProvider } from "@/context/StateContext";
 
 const Sidebar = () => {
+  const [{ userInfo }, dispatch] = useStateProvider();
   const router = useRouter();
   const handleLogout = () => {
     destroyCookie(null, "access-token");
     router.push("/");
   };
   return (
-    <section className="h-screen w-80 p-2">
+    <section className={`h-screen w-80 p-2`}>
       <div className="border h-full bg-white rounded-md">
         <div className="grid place-items-center h-[150px]">
           <img

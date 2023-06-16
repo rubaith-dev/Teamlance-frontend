@@ -1,33 +1,33 @@
+import ACTIONS from "@/context/Actions";
+import { useStateProvider } from "@/context/StateContext";
 import { deleteRequest } from "@/lib/httpMethods";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import Select from "react-select";
 import { toast } from "react-toastify";
 
-const DeleteCategory = () => {
+const DeleteCategory = ({ closeModal }) => {
+    const [,dispatch] = useStateProvider();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const queryClient = useQueryClient();
-  const { data: categoryOptions } = queryClient.getQueryData([
-    "fetch-categories",
-  ]);
-
- 
+  const { data: categoryOptions } = queryClient.getQueryData(["fetch-categories"]);
 
   // call to action when user click delete category button
   const deleteCategory = async () => {
-    const response = await deleteRequest(
-      `/categories/${selectedCategory.value}`
-    );
+    const response = await deleteRequest(`/categories/${selectedCategory.value}`);
 
     toast(response?.message);
     setSelectedCategory(null);
   };
 
   const deleteCategoryMutation = useMutation({
-    mutationFn: deleteCategory, 
-    onSuccess: ()=> queryClient.invalidateQueries({queryKey:['fetch-categories']})
-  })
+    mutationFn: deleteCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch-categories"] });
+      closeModal()
+    }
+  });
 
   return (
     <div>
@@ -54,9 +54,7 @@ const DeleteCategory = () => {
       />
       <button
         className={`p-2 rounded-md w-full mt-4 ${
-          selectedCategory === null
-            ? "bg-gray-300 text-gray-400"
-            : "bg-primary-700"
+          selectedCategory === null ? "bg-gray-300 text-gray-400" : "bg-primary-700"
         } text-white duration-500`}
         disabled={selectedCategory === null}
         onClick={() => deleteCategoryMutation.mutate()}
