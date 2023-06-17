@@ -7,22 +7,22 @@ const inter = Inter({ subsets: ["latin"] });
 import axiosInstance from "@/lib/axiosInstance";
 import axiosInstanceSSR from "@/lib/axiosInstanceSSR";
 import { destroyCookie } from "nookies";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteRequest } from "@/lib/httpMethods";
+import { QueryClient, dehydrate, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteRequest, getRequest } from "@/lib/httpMethods";
 import { toast } from "react-toastify";
 import Table from "./component/Dashboard/Table";
 import ManageCategory from "./component/Dashboard/ManageCategory";
 import ProductForm from "./component/Dashboard/ProductForm";
+import checkAuthSSR from "@/lib/checkAuthSSR";
 
 const fetchAllCategories = async () => {
-  const response = await axiosInstance.get("/categories");
+  const response = await getRequest("/categories");
   return response.data;
 };
 
-const dashboard = (props) => {
+const dashboard = () => {
   const [{ selectedDeleteProductsId }, dispatch] = useStateProvider();
-
-  useQuery({ queryKey: ["fetch-categories"], queryFn: fetchAllCategories, initialData: props.data.categoriesOptions });
+  useQuery({ queryKey: ["fetch-categories"], queryFn: fetchAllCategories });
 
   const handleDelete = async () => {
     const selectedIds = Array.from(selectedDeleteProductsId);
@@ -96,22 +96,9 @@ const dashboard = (props) => {
 export async function getServerSideProps(context) {
   const { req, res } = context;
   const token = req.cookies["access-token"];
-  let clientData = {};
 
-  if (!token) {
-    // If the authentication cookie is not found, redirect to the homepage
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-  try {
-    const res = await axiosInstanceSSR.get("/auth/isAuthenticated", {
-      headers: { Cookie: `access-token=${token}` },
-    });
-  } catch (error) {
+  const authenticated = await checkAuthSSR(token);
+  if (!authenticated) {
     destroyCookie({ res }, "access-token");
     return {
       redirect: {
@@ -121,27 +108,36 @@ export async function getServerSideProps(context) {
     };
   }
 
-  try {
-    const res = await axiosInstanceSSR.get("/categories", {
-      headers: { Cookie: `access-token=${token}` },
-    });
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["fetch-categories"],
+    queryFn: () => fetchSSR(token, "/categories"),
+  });
 
-    clientData["categoriesOptions"] = res.data.data;
-  } catch (error) {
-    destroyCookie({ res }, "access-token");
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
+  await queryClient.prefetchQuery({
+    queryKey: ["fetch-products"],
+    queryFn: () => fetchSSR(token, "/products"),
+  });
 
   return {
     props: {
-      data: { ...clientData },
+      dehydratedState: dehydrate(queryClient),
+      authenticated,
     },
   };
 }
+
+const fetchSSR = async (token, url) => {
+  try {
+    const res = await axiosInstanceSSR.get(url, {
+      headers: { Cookie: `access-token=${token}` },
+    });
+    return res.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
 export default dashboard;

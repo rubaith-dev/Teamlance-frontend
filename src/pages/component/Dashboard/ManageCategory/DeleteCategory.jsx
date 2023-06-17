@@ -11,7 +11,8 @@ const DeleteCategory = ({ closeModal }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(["fetch-categories"]);
+  const categoriesOptions = queryClient.getQueryData(["fetch-categories"]);
+
 
   // call to action when user click delete category button
   const deleteCategory = async () => {
@@ -34,7 +35,7 @@ const DeleteCategory = ({ closeModal }) => {
       {/* Section to delete category */}
       <p className="text-gray-500 mt-6 mb-2">Select Category to Delete</p>
       <Select
-        options={data?.categoriesOptions}
+        options={categoriesOptions}
         instanceId={"hello"}
         styles={{
           control: (baseStyle, state) => ({

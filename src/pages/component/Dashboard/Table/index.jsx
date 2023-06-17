@@ -13,7 +13,7 @@ const Table = () => {
   const { data: products, isLoading, isError } = useQuery({ queryKey: ["fetch-products"], queryFn: fetchAllProducts });
 
   return (
-    <section className="mt-5 rounded-md max-h-[80vh] overflow-scroll">
+    <section className="mt-5 rounded-md min-h-96 max-h-[85vh] overflow-scroll">
       <div className="">
         <TableHeader />
         {products?.map((product, index) => {

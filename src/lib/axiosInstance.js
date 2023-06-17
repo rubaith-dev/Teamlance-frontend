@@ -13,9 +13,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       destroyCookie(null, "access-token");
-      Router.push("/");
-      toast(error.response?.data.message);
-      
+      Router.push("/")
     }
     toast(error.response?.data.message);
     return error

@@ -63,7 +63,11 @@ const ProductForm = () => {
 
   const manageProductMutation = useMutation({
     mutationFn: (variables) => manageProduct(variables),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["fetch-products"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["fetch-products"] });
+      setValue("category", "");
+      setValue("availability", "");
+    },
   });
 
   useEffect(() => {
@@ -78,7 +82,7 @@ const ProductForm = () => {
   }, [selectedProduct]);
 
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(["fetch-categories"]);
+  const categoriesOptions = queryClient.getQueryData(["fetch-categories"]);
 
   return (
     // Wrapped with Modal wrapper
@@ -99,14 +103,14 @@ const ProductForm = () => {
 
           <input
             className="w-full px-4 py-2 rounded-md shadow-lg focus:outline-primary-700 placeholder:text-gray-500"
-            placeholder={"Product Name"}
+            placeholder={"Name"}
             {...register("productName", { required: { value: true, message: "Product name is required" } })}
           />
           <ErrorMessage message={errors?.productName?.message} />
 
           <input
             className="w-full px-4 py-2 rounded-md shadow-lg focus:outline-primary-700 placeholder:text-gray-500"
-            placeholder={"Product Name"}
+            placeholder={"Price"}
             type="number"
             {...register("price", { required: { value: true, message: "Product price is required" } })}
           />
@@ -116,9 +120,31 @@ const ProductForm = () => {
             control={control}
             name={"category"}
             rules={{ required: `You need to select a category` }}
-            render={({ field }) => <SelectInput field={field} name="category" options={data?.categoriesOptions} />}
+            render={({ field }) => (
+              <SelectInput
+                field={field}
+                name="category"
+                options={categoriesOptions}
+                placeholder={"Select a Category"}
+              />
+            )}
           />
           <ErrorMessage message={errors?.category?.message} />
+
+          <Controller
+            control={control}
+            name={"availability"}
+            rules={{ required: `You need to select an availability` }}
+            render={({ field }) => (
+              <SelectInput
+                field={field}
+                name="availability"
+                options={statusOptions}
+                placeholder={"Select an Availability"}
+              />
+            )}
+          />
+          <ErrorMessage message={errors?.availability?.message} />
 
           <button type="submit" className="bg-primary-700 text-white p-2 rounded-md">
             Submit

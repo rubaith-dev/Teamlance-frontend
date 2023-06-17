@@ -1,8 +1,9 @@
 import Select from "react-select";
 
-const SelectInput = ({ field, options, name }) => {
+const SelectInput = ({ field, options, name, placeholder }) => {
   return (
     <div>
+
       <Select
         {...field}
         options={options}
@@ -19,7 +20,7 @@ const SelectInput = ({ field, options, name }) => {
             },
           }),
         }}
-        placeholder={"Select a Category"}
+        placeholder={placeholder}
         isClearable
         isSearchable={false}
       />
