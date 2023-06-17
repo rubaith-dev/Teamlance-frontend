@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./styles.module.css";
-import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ACTIONS from "@/context/Actions";
 import { useStateProvider } from "@/context/StateContext";
 import Checkbox from "rc-checkbox";
+
+// Reusable component for table
 
 const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId }) => {
   let isIdODD = (orderId + 1) % 2 === 0;

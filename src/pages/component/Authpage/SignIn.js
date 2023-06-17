@@ -11,11 +11,7 @@ const SignIn = ({ showSigninOption, submit, dispatch }) => {
 
   return (
     <div className={`${showSigninOption ? "block" : "hidden"}`}>
-      <form
-        onSubmit={handleSubmit((data) => submit({...data, type:"signin"}))}
-        noValidate
-        className="mt-5"
-      >
+      <form onSubmit={handleSubmit((data) => submit({ ...data, type: "signin" }))} noValidate className="mt-5">
         <input
           type="text"
           className="w-full px-4 py-2 focus:outline-primary-600 bg-white shadow-lg rounded-md"
@@ -32,29 +28,22 @@ const SignIn = ({ showSigninOption, submit, dispatch }) => {
           placeholder="Password"
           {...register("password", {
             required: "Password is required",
-            minLength:{
-              value:3,
-              message: "Password must be at least 3 characters long"
-            }
+            minLength: {
+              value: 3,
+              message: "Password must be at least 3 characters long",
+            },
           })}
         />
         <p className="text-red-800 mt-2">{errors?.password?.message}</p>
-        <button
-          type="submit"
-          className="bg-primary-700 text-white p-2 rounded-md w-full mt-2 shadow-lg"
-        >
+        <button type="submit" className="bg-primary-700 text-white p-2 rounded-md w-full mt-2 shadow-lg">
           Submit
         </button>
       </form>
 
-      <p className="mt-5 text-gray-500 text-lg text-center">
-        Don't have any Account?
-      </p>
+      <p className="mt-5 text-gray-500 text-lg text-center">Don't have any Account?</p>
       <button
         className="bg-primary-700 text-white p-2 rounded-md w-full mt-2 shadow-lg"
-        onClick={() =>
-          dispatch({ type: ACTIONS.TOGGLE_AUTH_MODAL, payload: false })
-        }
+        onClick={() => dispatch({ type: ACTIONS.TOGGLE_AUTH_MODAL, payload: false })}
       >
         Create Account
       </button>

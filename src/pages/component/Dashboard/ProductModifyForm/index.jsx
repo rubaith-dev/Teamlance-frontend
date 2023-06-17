@@ -61,6 +61,7 @@ const ProductForm = () => {
     toast(response?.message);
   };
 
+  // Fetch updated products list after every new addition or deleting
   const manageProductMutation = useMutation({
     mutationFn: (variables) => manageProduct(variables),
     onSuccess: () => {
