@@ -1,6 +1,6 @@
 import { useStateProvider } from "@/context/StateContext";
 
-function index({ isOpen, dispatchId, children }) {
+function Modal({ isOpen, dispatchId, children }) {
   const [state, dispatch] = useStateProvider();
   return (
     <section
@@ -13,4 +13,4 @@ function index({ isOpen, dispatchId, children }) {
   );
 }
 
-export default index;
+export default Modal;

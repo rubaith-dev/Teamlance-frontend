@@ -7,11 +7,11 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 
 const DeleteCategory = ({ closeModal }) => {
-    const [,dispatch] = useStateProvider();
+  const [, dispatch] = useStateProvider();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const queryClient = useQueryClient();
-  const { data: categoryOptions } = queryClient.getQueryData(["fetch-categories"]);
+  const data = queryClient.getQueryData(["fetch-categories"]);
 
   // call to action when user click delete category button
   const deleteCategory = async () => {
@@ -25,8 +25,8 @@ const DeleteCategory = ({ closeModal }) => {
     mutationFn: deleteCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["fetch-categories"] });
-      closeModal()
-    }
+      closeModal();
+    },
   });
 
   return (
@@ -34,7 +34,7 @@ const DeleteCategory = ({ closeModal }) => {
       {/* Section to delete category */}
       <p className="text-gray-500 mt-6 mb-2">Select Category to Delete</p>
       <Select
-        options={categoryOptions}
+        options={data?.categoriesOptions}
         instanceId={"hello"}
         styles={{
           control: (baseStyle, state) => ({

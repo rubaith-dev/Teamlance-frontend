@@ -1,4 +1,5 @@
-import { SignIn, SignUp } from "./component/Authpage";
+import SignIn from "./component/Authpage/SignIn";
+import SignUp from "./component/Authpage/SignUp";
 import { postRequest } from "@/lib/httpMethods";
 import { useRouter } from "next/router";
 import { useStateProvider } from "@/context/StateContext";

@@ -1,4 +1,4 @@
-import { Modal } from "../../shared";
+import Modal from "../../shared/Modal";
 import { useStateProvider } from "@/context/StateContext";
 import { X } from "lucide-react";
 import ACTIONS from "@/context/Actions";

@@ -1,7 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
 import TableHeader from "./TableHeader";
-import { products } from "./dummyProducts";
 import { useQuery } from "@tanstack/react-query";
 import { getRequest } from "@/lib/httpMethods";
 
@@ -10,7 +9,7 @@ const fetchAllProducts = async () => {
   return response.data;
 };
 
-const index = () => {
+const Table = () => {
   const { data: products, isLoading, isError } = useQuery({ queryKey: ["fetch-products"], queryFn: fetchAllProducts });
 
   return (
@@ -25,4 +24,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Table;

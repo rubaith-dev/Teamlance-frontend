@@ -1,6 +1,5 @@
 import { Inter } from "next/font/google";
-import { ProductForm, Table, ManageCategory } from "./component/Homepage";
-import { Button } from "./component/shared";
+import Button from "./component/shared/Button";
 import { useStateProvider } from "@/context/StateContext";
 import ACTIONS from "@/context/Actions";
 import { Plus, Trash } from "lucide-react";
@@ -11,6 +10,9 @@ import { destroyCookie } from "nookies";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteRequest } from "@/lib/httpMethods";
 import { toast } from "react-toastify";
+import Table from "./component/Dashboard/Table";
+import ManageCategory from "./component/Dashboard/ManageCategory";
+import ProductForm from "./component/Dashboard/ProductForm";
 
 const fetchAllCategories = async () => {
   const response = await axiosInstance.get("/categories");
@@ -37,7 +39,7 @@ const dashboard = (props) => {
   const deleteProductsMutation = useMutation({
     mutationFn: handleDelete,
     onSuccess: (res) => {
-      dispatch({type:ACTIONS.CLEAR_SELECTED_PRODUCTS})
+      dispatch({ type: ACTIONS.CLEAR_SELECTED_PRODUCTS });
       queryClient.invalidateQueries({ queryKey: ["fetch-products"] });
     },
   });

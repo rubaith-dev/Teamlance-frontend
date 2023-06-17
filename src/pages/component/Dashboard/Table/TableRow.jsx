@@ -4,7 +4,6 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ACTIONS from "@/context/Actions";
 import { useStateProvider } from "@/context/StateContext";
-import { ProductForm } from "..";
 import Checkbox from "rc-checkbox";
 
 const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId, isLoading }) => {
@@ -56,7 +55,7 @@ const TableRow = ({ orderId, name, price, category, availability, createdAt, id:
             <p className={styles.table_row}>{category?.label}</p>
             <p className={styles.table_row}>${price}</p>
             <p className={styles.table_row}>{availability?.label}</p>
-            <p className={styles.table_row}>{createdAt.split("T")[0]}</p>
+            <p className={styles.table_row}>{createdAt?.split("T")[0]}</p>
           </div>
         </section>
       )}

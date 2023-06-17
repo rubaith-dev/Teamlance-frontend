@@ -1,7 +1,7 @@
 import React from "react";
 import { destroyCookie } from "nookies";
 import { useRouter } from "next/router";
-import { Button } from "../shared";
+import Button from "../shared/Button";
 import { useStateProvider } from "@/context/StateContext";
 
 const Sidebar = () => {
