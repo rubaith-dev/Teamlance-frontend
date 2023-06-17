@@ -21,7 +21,7 @@ const TableHeader = () => {
   const isAllSelected = selectedDeleteProductsId.size === allProductsId?.length;
 
   return (
-    <section>
+    <section className=" w-full">
       <div className="flex border-b-2 border-primary-700 ">
         <div className={`w-12 grid place-items-center bg-white`}>
           <Checkbox

@@ -22,6 +22,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         showAddProductModal: action.payload,
+        selectedProduct: initialState.selectedProduct
       };
     case ACTIONS.TOGGLE_EDIT_PRODUCT_MODAL:
       return {

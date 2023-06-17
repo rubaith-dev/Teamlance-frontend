@@ -38,7 +38,7 @@ const TableRow = ({ orderId, name, price, category, availability, createdAt, id:
         <div
           className={`flex p-4 justify-between cursor-pointer  hover:bg-primary-600 hover:text-white flex-grow duration-300 ${
             isIdODD ? "bg-white" : " bg-gray-100"
-          }  ${isSelectedForDelete ? "bg-primary-200" : ""} `}
+          }  ${isSelectedForDelete ? "!bg-primary-200 !text-gray-600" : ""} `}
           onClick={handleSelectProduct}
         >
           <p className={styles.table_row}>{name}</p>
