@@ -1,5 +1,3 @@
-import ACTIONS from "@/context/Actions";
-import { useStateProvider } from "@/context/StateContext";
 import { deleteRequest } from "@/lib/httpMethods";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -7,12 +5,10 @@ import Select from "react-select";
 import { toast } from "react-toastify";
 
 const DeleteCategory = ({ closeModal }) => {
-  const [, dispatch] = useStateProvider();
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const queryClient = useQueryClient();
   const categoriesOptions = queryClient.getQueryData(["fetch-categories"]);
-
 
   // call to action when user click delete category button
   const deleteCategory = async () => {
@@ -22,6 +18,7 @@ const DeleteCategory = ({ closeModal }) => {
     setSelectedCategory(null);
   };
 
+  // After delete update the the categories list
   const deleteCategoryMutation = useMutation({
     mutationFn: deleteCategory,
     onSuccess: () => {

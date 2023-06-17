@@ -6,7 +6,7 @@ import ACTIONS from "@/context/Actions";
 import { useStateProvider } from "@/context/StateContext";
 import Checkbox from "rc-checkbox";
 
-const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId, isLoading }) => {
+const TableRow = ({ orderId, name, price, category, availability, createdAt, id: productId }) => {
   let isIdODD = (orderId + 1) % 2 === 0;
   const [{ selectedDeleteProductsId }, dispatch] = useStateProvider();
   const isSelectedForDelete = selectedDeleteProductsId.has(productId);

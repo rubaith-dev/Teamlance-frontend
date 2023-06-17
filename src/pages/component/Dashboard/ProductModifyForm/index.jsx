@@ -112,7 +112,10 @@ const ProductForm = () => {
             className="w-full px-4 py-2 rounded-md shadow-lg focus:outline-primary-700 placeholder:text-gray-500"
             placeholder={"Price"}
             type="number"
-            {...register("price", { required: { value: true, message: "Product price is required" } })}
+            {...register("price", {
+              required: { value: true, message: "Product price is required" },
+              min: { value: 10, message: "Price can't be less than $10" },
+            })}
           />
           <ErrorMessage message={errors?.price?.message} />
 

@@ -12,7 +12,7 @@ import { deleteRequest, getRequest } from "@/lib/httpMethods";
 import { toast } from "react-toastify";
 import Table from "./component/Dashboard/Table";
 import ManageCategory from "./component/Dashboard/ManageCategory";
-import ProductForm from "./component/Dashboard/ProductForm";
+import ProductForm from "./component/Dashboard/ProductModifyForm";
 import checkAuthSSR from "@/lib/checkAuthSSR";
 
 const fetchAllCategories = async () => {

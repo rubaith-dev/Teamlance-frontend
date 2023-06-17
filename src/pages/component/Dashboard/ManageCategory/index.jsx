@@ -27,11 +27,16 @@ const ManageCategory = () => {
           <X className="cursor-pointer" onClick={() => closeModal()} />
         </div>
 
+        {/* Add / Delete components */}
         <AddCategory closeModal={closeModal} />
         <DeleteCategory closeModal={closeModal} />
+
+        {/* Desclamier */}
+
         <div className="bg-red-200 text-sm text-gray-500 mt-4 p-2 rounded-md">
           <p className="mb-1">** Keep in mind that category is not private to you **</p>
-          <p className="">*** People can see your created category too !! ***</p>
+          <p className="">** People can see your created category too !! **</p>
+          <p>** Can't delete category where other user has products **</p>
         </div>
       </div>
     </Modal>

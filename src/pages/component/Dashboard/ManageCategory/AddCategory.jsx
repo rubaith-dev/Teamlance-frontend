@@ -24,6 +24,7 @@ const AddCategory = ({ closeModal }) => {
     toast(response?.message);
   };
 
+  // After adding product update the list
   const queryClient = useQueryClient();
 
   const addCategoryMutation = useMutation({

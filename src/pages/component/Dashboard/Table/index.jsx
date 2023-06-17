@@ -10,15 +10,24 @@ const fetchAllProducts = async () => {
 };
 
 const Table = () => {
-  const { data: products, isLoading, isError } = useQuery({ queryKey: ["fetch-products"], queryFn: fetchAllProducts });
+  const { data: products } = useQuery({ queryKey: ["fetch-products"], queryFn: fetchAllProducts });
 
   return (
-    <section className="mt-5 rounded-md min-h-96 max-h-[85vh] overflow-scroll">
+    <section className="mt-5 rounded-md min-h-[85vh] overflow-scroll">
       <div className="">
         <TableHeader />
-        {products?.map((product, index) => {
-          return <TableRow key={index} orderId={index} {...product} isLoading={isLoading} />;
-        })}
+        {products.length > 0 ? (
+          products?.map((product, index) => {
+            return <TableRow key={index} orderId={index} {...product} />;
+          })
+        ) : (
+          <div className="text-gray-600 text-center p-10">
+         
+            <p>
+              You haven't created any product yet !! <br/> please add product first !!
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
