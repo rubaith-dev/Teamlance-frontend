@@ -25,7 +25,7 @@ export default function Home() {
     <div className="w-full h-screen grid place-items-center">
       <div className="w-96 rounded-lg shadow-lg p-10 bg-gray-100">
         <div className="grid place-items-center">
-          <img src="/Color_logo.png" alt="logo" className="w-36" />
+          <img src="/Color_logo.webp" alt="logo" className="w-36" />
         </div>
         <SignIn showSigninOption={showSigninOption} submit={submit} dispatch={dispatch} />
         <SignUp showSigninOption={showSigninOption} submit={submit} dispatch={dispatch} />

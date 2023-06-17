@@ -18,7 +18,7 @@ const Table = () => {
         <TableHeader />
 
         {/* Product List Data */}
-        {products.length > 0 ? (
+        {products?.length > 0 ? (
           products?.map((product, index) => {
             return <TableRow key={index} orderId={index} {...product} />;
           })
