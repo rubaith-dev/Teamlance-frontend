@@ -11,6 +11,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    if(!error.response){
+      toast("Make Sure Backend Server is on")
+      return
+    }
     if (error.response.status === 401) {
       destroyCookie(null, "access-token");
       Router.push("/")

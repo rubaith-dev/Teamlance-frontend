@@ -25,7 +25,7 @@ const SignUp = ({ showSigninOption, submit, dispatch }) => {
         <p className="text-red-800 mt-2">{errors?.userName?.message}</p>
 
         <input
-          type="text"
+          type="password"
           className="w-full px-4 py-2 focus:outline-primary-600 bg-white shadow-lg rounded-md"
           placeholder="Password"
           {...register("password", {
@@ -39,7 +39,7 @@ const SignUp = ({ showSigninOption, submit, dispatch }) => {
         <p className="text-red-800 mt-2">{errors?.password?.message}</p>
 
         <input
-          type="text"
+          type="password"
           className="w-full px-4 py-2 focus:outline-primary-600 bg-white shadow-lg rounded-md"
           placeholder="confirm Password"
           {...register("confirmPassword", {
