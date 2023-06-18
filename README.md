@@ -104,7 +104,7 @@ npm install / yarn
 ### 3. Set Up Environment Variables
 Create a new file named `.env` in the project's root directory. Copy the following environment variable configuration into the `.env` file:
 ```
-BASE_URL = "http://localhost:4000/api/v1"
+NEXT_PUBLIC_BASE_URL = "http://localhost:4000/api/v1"
 ```
 `Make Sure your your backend runs on port 4000 if there is any change, change it here also.`
 
