@@ -9,15 +9,15 @@ This is Frontend code for the teamlance frontend assessment Which will consume t
 - `React Hook Form` - Form Management
 - 
 ## Features
-- ##### `User authentication with cookie-based session management`
-- ##### `Sign up and sign in functionality (Strict Focus on the security, every request goes through multiple validation)`
-- ##### `Access control for authenticated users (Only signed in users can access their data)`
-- ##### `Using cache system to not fetch products/data until the data requires updated server data`
-- ##### `CRUD operations for managing products`
-- ##### `Batch delete functionality for products`
-- ##### `Product category management(Add and Delete)`
-- ##### `Server-side rendering (SSR) for improved performance and prefetching data in the server side`
-- ##### `Easy hydration and dyhydration management for better SSR and CSR Performance`
+- ##### User authentication with cookie-based session management
+- ##### Sign up and sign in functionality (Strict Focus on the security, every request goes through multiple validation)
+- ##### Access control for authenticated users (Only signed in users can access their data)
+- ##### Using cache system to not fetch products/data until the data requires updated server data
+- ##### CRUD operations for managing products
+- ##### Batch delete functionality for products
+- ##### Product category management(Add and Delete)
+- ##### Server-side rendering (SSR) for improved performance and prefetching data in the server side
+- ##### Easy hydration and dyhydration management for better SSR and CSR Performance
 
 Test Cases for both back and frontend
 User Registration:
